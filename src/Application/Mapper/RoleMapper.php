@@ -17,7 +17,6 @@ class RoleMapper
 
     public static function mapDtoToEntity(RoleDto $roleDto): Role
     {
-
         $role = new Role();
 
         $role->setName($roleDto->name);
