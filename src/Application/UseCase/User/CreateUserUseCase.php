@@ -6,6 +6,7 @@ use App\Application\DTO\UserDto\Input\CreateUserDto;
 use App\Application\DTO\UserDto\Output\UserResponseDto;
 use App\Application\Mapper\UserMapper;
 use App\Application\Port\Input\Interface\User\CreateUserInterface;
+use App\Domain\Exception\ConflictException;
 use App\Domain\Port\Output\Interface\Repository\UserRepositoryInterface;
 use App\Domain\Service\Auth\AuthCreationService;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -21,6 +22,10 @@ class CreateUserUseCase implements CreateUserInterface
 
     public function execute(CreateUserDto $createUserDto): UserResponseDto
     {
+        if ($this->userRepository->findUserByEmail($createUserDto->email)) {
+            throw new ConflictException('User already exists.');
+        }
+
         $user = UserMapper::mapCreateDtoToEntity($createUserDto);
 
         if ($createUserDto->plainPassword) {
@@ -31,7 +36,8 @@ class CreateUserUseCase implements CreateUserInterface
             $user->setAuth($auth);
         }
 
+        $userResponseDto = UserMapper::mapEntityToDto($user);
 
-        return new UserResponseDto();
+        return $userResponseDto;
     }
 }

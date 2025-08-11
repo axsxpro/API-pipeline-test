@@ -2,6 +2,7 @@
 
 namespace App\Domain\Exception;
 use RuntimeException;
+use Symfony\Component\HttpFoundation\Response;
 
 class ResourceNotFoundException extends RuntimeException implements ApiExceptionInterface {
 
@@ -19,7 +20,7 @@ class ResourceNotFoundException extends RuntimeException implements ApiException
 
     public function getCustomStatusCode(): int
     {
-        return 404;
+        return Response::HTTP_NOT_FOUND; // 404
     }
 }
 
