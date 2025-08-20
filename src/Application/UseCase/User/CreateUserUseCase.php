@@ -11,13 +11,13 @@ use App\Domain\Port\Output\Interface\Repository\UserRepositoryInterface;
 use App\Domain\Service\Auth\AuthCreationService;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class CreateUserUseCase implements CreateUserInterface
+readonly class CreateUserUseCase implements CreateUserInterface
 {
     
     public function __construct(
-        private readonly AuthCreationService $authCreationService,
-        private readonly UserRepositoryInterface $userRepository,
-        private readonly UserPasswordHasherInterface $passwordHasher
+        private AuthCreationService         $authCreationService,
+        private UserRepositoryInterface     $userRepository,
+        private UserPasswordHasherInterface $passwordHasher
     ) {}
 
     public function execute(CreateUserDto $createUserDto): UserResponseDto

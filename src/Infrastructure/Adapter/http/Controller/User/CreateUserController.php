@@ -5,13 +5,14 @@ namespace App\Infrastructure\Adapter\http\Controller\User;
 use App\Application\DTO\UserDto\Input\CreateUserDto;
 use App\Application\Port\Input\Interface\User\CreateUserInterface;
 use App\Domain\Exception\ValidationException;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 
-readonly class CreateUserController
+class CreateUserController extends AbstractController
 {
     public function __construct(
         private CreateUserInterface $createUser
