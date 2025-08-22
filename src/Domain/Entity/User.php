@@ -208,4 +208,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function normalize(): void
+    {
+        $this->firstname = ucfirst(strtolower(trim($this->firstname)));
+        $this->name = ucfirst(strtolower(trim($this->name)));
+        $this->email = strtolower(trim($this->email));
+    }
+
 }
