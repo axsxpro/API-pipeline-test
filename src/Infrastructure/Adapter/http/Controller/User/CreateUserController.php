@@ -10,15 +10,27 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use OpenApi\Attributes as OA;
 
 
 class CreateUserController extends AbstractController
 {
     public function __construct(
-        private CreateUserInterface $createUser
+        private readonly CreateUserInterface $createUser
     ) {}
 
     #[Route('/api/post/users', name: "app_users_post", methods: ['POST'])]
+    #[OA\Post(
+        path: "/api/users",
+        summary: "Créer un nouvel utilisateur",
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(ref: "#/components/schemas/CreateUserDto")
+        ),
+        responses: [
+            new OA\Response(response: 201, description: "Created")
+        ]
+    )]
     public function createUsers( #[MapRequestPayload] CreateUserDto $createUserDto, ValidatorInterface $validator): JsonResponse
     {
         $errors = $validator->validate($createUserDto);

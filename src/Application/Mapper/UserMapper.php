@@ -32,7 +32,7 @@ class UserMapper
         $user->setEmail($createUserDto->email);
         $user->setName($createUserDto->name);
         $user->setFirstname($createUserDto->firstname);
-        $birthdate = DateTime::createFromFormat('d/m/Y', $createUserDto->birthdate);
+        $birthdate = DateTime::createFromFormat('d-m-Y', $createUserDto->birthdate);
         $user->setBirthdate($birthdate);
         $user->setRole(RoleMapper::mapDtoToEntity($createUserDto->role));
         $user->setCreatedAt(new DateTimeImmutable());

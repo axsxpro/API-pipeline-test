@@ -36,6 +36,8 @@ readonly class CreateUserUseCase implements CreateUserInterface
             $user->setAuth($auth);
         }
 
+        $this->userRepository->save($user);
+
         $userResponseDto = UserMapper::mapEntityToDto($user);
 
         return $userResponseDto;
