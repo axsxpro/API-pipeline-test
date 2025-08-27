@@ -3,41 +3,30 @@
 namespace App\Infrastructure\Repository;
 
 use App\Domain\Entity\Role;
+use App\Domain\Enum\RoleEnum;
+use App\Domain\Port\Output\Interface\Repository\RoleRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<Role>
  */
-class RoleRepository extends ServiceEntityRepository
+class RoleRepository extends ServiceEntityRepository implements RoleRepositoryInterface
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, private readonly EntityManagerInterface $entityManager)
     {
         parent::__construct($registry, Role::class);
     }
 
-    //    /**
-    //     * @return Role[] Returns an array of Role objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('r')
-    //            ->andWhere('r.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('r.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function findByName(RoleEnum $name): ?Role
+    {
+        return $this->findOneBy(['name' => $name]);
+    }
 
-    //    public function findOneBySomeField($value): ?Role
-    //    {
-    //        return $this->createQueryBuilder('r')
-    //            ->andWhere('r.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function save(Role $role): void
+    {
+        $this->entityManager->persist($role);
+        $this->entityManager->flush();
+    }
 }

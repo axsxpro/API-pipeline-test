@@ -17,7 +17,6 @@ class GetAllUserController extends abstractController
     ){}
 
 
-
     #[Route('/api/users', name: 'app_users', methods: ['GET'])]
     #[OA\Get(
         path: "/api/users",

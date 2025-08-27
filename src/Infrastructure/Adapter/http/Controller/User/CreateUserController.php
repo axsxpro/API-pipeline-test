@@ -21,8 +21,8 @@ class CreateUserController extends AbstractController
 
     #[Route('/api/post/users', name: "app_users_post", methods: ['POST'])]
     #[OA\Post(
-        path: "/api/users",
-        summary: "Créer un nouvel utilisateur",
+        path: "/api/post/users",
+        summary: "Create a new user",
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\JsonContent(ref: "#/components/schemas/CreateUserDto")
