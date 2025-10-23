@@ -7,6 +7,8 @@ use App\Application\DTO\UserDto\Output\UserResponseDto;
 use App\Application\Mapper\UserMapper;
 use App\Application\Port\Input\Interface\User\CreateUserInterface;
 use App\Domain\Exception\ConflictException;
+use App\Domain\Exception\ResourceNotFoundException;
+use App\Domain\Port\Output\Interface\Repository\RoleRepositoryInterface;
 use App\Domain\Port\Output\Interface\Repository\UserRepositoryInterface;
 use App\Domain\Service\Auth\AuthCreationService;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -17,7 +19,8 @@ readonly class CreateUserUseCase implements CreateUserInterface
     public function __construct(
         private AuthCreationService         $authCreationService,
         private UserRepositoryInterface     $userRepository,
-        private UserPasswordHasherInterface $passwordHasher
+        private UserPasswordHasherInterface $passwordHasher,
+        private RoleRepositoryInterface     $roleRepository,
     ) {}
 
     public function execute(CreateUserDto $createUserDto): UserResponseDto
@@ -26,7 +29,13 @@ readonly class CreateUserUseCase implements CreateUserInterface
             throw new ConflictException('User already exists.');
         }
 
+        $role = $this->roleRepository->findByName($createUserDto->role->name);
+        if (!$role) {
+            throw new ResourceNotFoundException("Role not found.");
+        }
+
         $user = UserMapper::mapCreateDtoToEntity($createUserDto);
+        $user->setRole($role);
 
         if ($createUserDto->plainPassword) {
 

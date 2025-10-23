@@ -27,6 +27,7 @@ class CreateUserController extends AbstractController
             required: true,
             content: new OA\JsonContent(ref: "#/components/schemas/CreateUserDto")
         ),
+        tags: ["Users"],
         responses: [
             new OA\Response(response: 201, description: "Created")
         ]

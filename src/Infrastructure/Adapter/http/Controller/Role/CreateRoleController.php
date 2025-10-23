@@ -22,8 +22,9 @@ class CreateRoleController extends AbstractController
         summary: "Create a new role",
         requestBody: new OA\RequestBody(
             required: true,
-            content: new OA\JsonContent(ref: "#/components/schemas/roleDto")
+            content: new OA\JsonContent(ref: "#/components/schemas/RoleDto")
         ),
+        tags: ["Role"],
         responses: [
             new OA\Response(response: 201, description: "Created")
         ]

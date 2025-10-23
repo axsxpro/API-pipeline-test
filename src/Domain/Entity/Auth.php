@@ -30,7 +30,7 @@ class Auth
     #[ORM\Column]
     private ?DateTimeImmutable $passwordCreatedAt = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?DateTimeImmutable $passwordLastChanged = null;
 
     public function getId(): ?int
@@ -50,12 +50,12 @@ class Auth
         return $this;
     }
 
-    public function getPassswordCreatedAt(): ?DateTimeImmutable
+    public function getPasswordCreatedAt(): ?DateTimeImmutable
     {
         return $this->passwordCreatedAt;
     }
 
-    public function setPassswordCreatedAt(DateTimeImmutable $passwordCreatedAt): static
+    public function setPasswordCreatedAt(DateTimeImmutable $passwordCreatedAt): static
     {
         $this->passwordCreatedAt = $passwordCreatedAt;
 
@@ -67,7 +67,7 @@ class Auth
         return $this->passwordLastChanged;
     }
 
-    public function setPasswordLastChanged(DateTimeImmutable $passwordLastChanged): static
+    public function setPasswordLastChanged(?DateTimeImmutable $passwordLastChanged): static
     {
         $this->passwordLastChanged = $passwordLastChanged;
 

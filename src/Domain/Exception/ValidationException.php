@@ -2,7 +2,7 @@
 
 namespace App\Domain\Exception;
 
-use Symfony\Component\Form\Exception\RuntimeException;
+use RuntimeException;
 use Symfony\Component\HttpFoundation\Response;
 
 class ValidationException extends RuntimeException implements ApiExceptionInterface
@@ -21,5 +21,4 @@ class ValidationException extends RuntimeException implements ApiExceptionInterf
     {
         return Response::HTTP_BAD_REQUEST; // 400
     }
-
 }
