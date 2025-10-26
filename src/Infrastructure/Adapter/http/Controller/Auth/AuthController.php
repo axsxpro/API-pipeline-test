@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Annotation\Route;
+use OpenApi\Attributes as OA;
 
 class AuthController extends abstractController
 {
@@ -16,7 +17,19 @@ class AuthController extends abstractController
     ) {}
 
     #[Route('/api/auth/{id}', name: 'create_user_password', methods: ['POST'])]
-    public function createAuth( #[MapRequestPayload] int $id, PasswordCreateDto $passwordCreateDto): JsonResponse
+    #[OA\Post(
+        path: "/api/auth/{id}",
+        summary: "Create password for an user.",
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(ref: "#/components/schemas/PasswordCreateDto")
+        ),
+        tags: ["Authentification"],
+        responses: [
+            new OA\Response(response: 201, description: "Created")
+        ]
+    )]
+    public function createAuth(int $id, #[MapRequestPayload] PasswordCreateDto $passwordCreateDto): JsonResponse
     {
         $this->createAuthInterface->execute($id, $passwordCreateDto);
 

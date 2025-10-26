@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
-    schema: "RoleDto",
+    schema: "RoleDto", //nom de la classe
     description: "Données du rôle d'un utilisateur",
     properties: [
         new OA\Property(

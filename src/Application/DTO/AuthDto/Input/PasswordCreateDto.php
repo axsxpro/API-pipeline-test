@@ -6,11 +6,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
-    schema: "PasswordDto",
+    schema: "PasswordCreateDto",
     description: "Creation d'un nouveau mot de passe",
     properties: [
         new OA\Property(
-            property: "password",
+            property: "plainPassword",
             type: "string",
             example: "Password123!"
         ),
