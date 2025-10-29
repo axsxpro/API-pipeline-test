@@ -4,12 +4,10 @@ namespace App\Infrastructure\Adapter\http\Controller\User;
 
 use App\Application\DTO\UserDto\Input\CreateUserDto;
 use App\Application\Port\Input\Interface\User\CreateUserInterface;
-use App\Domain\Exception\ValidationException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use OpenApi\Attributes as OA;
 
 
@@ -32,13 +30,8 @@ class CreateUserController extends AbstractController
             new OA\Response(response: 201, description: "Created")
         ]
     )]
-    public function createUsers( #[MapRequestPayload] CreateUserDto $createUserDto, ValidatorInterface $validator): JsonResponse
+    public function createUsers( #[MapRequestPayload] CreateUserDto $createUserDto): JsonResponse
     {
-        $errors = $validator->validate($createUserDto);
-        if (count($errors) > 0) {
-            throw new ValidationException('Data validation error when creating a user.');
-        }
-
         $userResponseDto = $this->createUser->execute($createUserDto);
 
         return new JsonResponse($userResponseDto, JsonResponse::HTTP_CREATED);

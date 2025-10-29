@@ -8,10 +8,12 @@ use App\Application\Mapper\UserMapper;
 use App\Application\Port\Input\Interface\User\CreateUserInterface;
 use App\Domain\Exception\ConflictException;
 use App\Domain\Exception\ResourceNotFoundException;
+use App\Domain\Exception\ValidationException;
 use App\Domain\Port\Output\Interface\Repository\RoleRepositoryInterface;
 use App\Domain\Port\Output\Interface\Repository\UserRepositoryInterface;
 use App\Domain\Service\Auth\AuthCreationService;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 readonly class CreateUserUseCase implements CreateUserInterface
 {
@@ -21,10 +23,16 @@ readonly class CreateUserUseCase implements CreateUserInterface
         private UserRepositoryInterface     $userRepository,
         private UserPasswordHasherInterface $passwordHasher,
         private RoleRepositoryInterface     $roleRepository,
+        private ValidatorInterface          $validator
     ) {}
 
     public function execute(CreateUserDto $createUserDto): UserResponseDto
     {
+        $errors = $this->validator->validate($createUserDto);
+        if (count($errors) > 0) {
+            throw new ValidationException('Data validation error when creating a user.');
+        }
+
         if ($this->userRepository->findUserByEmail($createUserDto->email)) {
             throw new ConflictException('User already exists.');
         }

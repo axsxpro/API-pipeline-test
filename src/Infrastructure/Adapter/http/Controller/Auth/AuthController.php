@@ -16,15 +16,15 @@ class AuthController extends abstractController
         private readonly CreateAuthInterface $createAuthInterface
     ) {}
 
-    #[Route('/api/auth/{id}', name: 'create_user_password', methods: ['POST'])]
+    #[Route('/api/post/auth/{id}', name: 'create_user_password', methods: ['POST'])]
     #[OA\Post(
-        path: "/api/auth/{id}",
+        path: "/api/post/auth/{id}",
         summary: "Create password for an user.",
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\JsonContent(ref: "#/components/schemas/PasswordCreateDto")
         ),
-        tags: ["Authentification"],
+        tags: ["Auth"],
         responses: [
             new OA\Response(response: 201, description: "Created")
         ]
